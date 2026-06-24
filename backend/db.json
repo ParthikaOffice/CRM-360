@@ -1,0 +1,733 @@
+{
+  "users": [
+    {
+      "id": "u_1",
+      "name": "John Doe (SA)",
+      "email": "superadmin@crm.com",
+      "password": "password",
+      "role": "Super Admin",
+      "phone": "+1 (555) 0199",
+      "company": "Global Corp Enterprise"
+    },
+    {
+      "id": "u_2",
+      "name": "Sarah Connor",
+      "email": "admin@crm.com",
+      "password": "password",
+      "role": "Admin",
+      "phone": "+1 (555) 0188",
+      "company": "Global Corp Enterprise"
+    },
+    {
+      "id": "u_3",
+      "name": "Kyle Reese",
+      "email": "user@crm.com",
+      "password": "password",
+      "role": "User",
+      "phone": "+1 (555) 0177",
+      "company": "Global Corp Enterprise"
+    }
+  ],
+  "categories": [
+    "Healthcare",
+    "Manufacturing",
+    "Education",
+    "Real Estate",
+    "E-Commerce",
+    "Finance",
+    "Logistics",
+    "Hospitality",
+    "IT Services"
+  ],
+  "serviceTypes": [
+    "Service Based",
+    "Product Based"
+  ],
+  "pipelines": [
+    {
+      "id": "p_1",
+      "name": "New",
+      "order": 1
+    },
+    {
+      "id": "p_2",
+      "name": "Possible Response Received",
+      "order": 3
+    },
+    {
+      "id": "p_3",
+      "name": "Discussion",
+      "order": 2
+    },
+    {
+      "id": "p_4",
+      "name": "Proposal Preparation",
+      "order": 4
+    },
+    {
+      "id": "p_5",
+      "name": "Negotiation",
+      "order": 5
+    },
+    {
+      "id": "p_6",
+      "name": "Won",
+      "order": 6
+    },
+    {
+      "id": "p_7",
+      "name": "Lost",
+      "order": 7
+    }
+  ],
+  "referralPipelines": [
+    {
+      "id": "rp_1",
+      "name": "Referral Submitted",
+      "order": 1
+    },
+    {
+      "id": "rp_2",
+      "name": "Qualified",
+      "order": 2
+    },
+    {
+      "id": "rp_3",
+      "name": "Proposal",
+      "order": 3
+    },
+    {
+      "id": "rp_4",
+      "name": "Won",
+      "order": 4
+    },
+    {
+      "id": "rp_5",
+      "name": "Reward Approved",
+      "order": 5
+    }
+  ],
+  "leads": [
+    {
+      "id": "l_1",
+      "name": "Dr. Elizabeth Blackwell",
+      "company": "Blackwell Clinic Group",
+      "email": "eblackwell@blackwellclinic.com",
+      "phone": "+1 (555) 0211",
+      "source": "Website",
+      "serviceType": "Service Based",
+      "category": "Healthcare",
+      "status": "New",
+      "assignedUser": "Kyle Reese",
+      "createdDate": "2026-06-12",
+      "notes": "Interested in full suite software upgrades for 4 hospitals.",
+      "campaign": "Tech Expo 2026",
+      "team": "Sales Team Alpha",
+      "city": "Detroit",
+      "country": "United States"
+    },
+    {
+      "id": "l_2",
+      "name": "Henry Ford II",
+      "company": "Ford Manufacturing Labs",
+      "email": "hford@fordmfg.com",
+      "phone": "+1 (555) 0222",
+      "source": "Referral",
+      "serviceType": "Product Based",
+      "category": "Manufacturing",
+      "status": "Contacted",
+      "assignedUser": "Sarah Connor",
+      "createdDate": "2026-06-16",
+      "notes": "Referred by Michael Scott. Interested in assembly line automation IoT.",
+      "campaign": "None",
+      "team": "Sales Team Beta",
+      "city": "Detroit",
+      "country": "United States"
+    },
+    {
+      "id": "l_3",
+      "name": "Marie Curie",
+      "company": "Sorbonne Research Academy",
+      "email": "mcurie@sorbonne.edu",
+      "phone": "+1 (555) 0233",
+      "source": "Campaign",
+      "serviceType": "Service Based",
+      "category": "Education",
+      "status": "Qualified",
+      "assignedUser": "John Doe (SA)",
+      "createdDate": "2026-06-19",
+      "notes": "Responded to summer scholarship cloud system campaign. Budget is tight but project is prestigious.",
+      "campaign": "Summer Cloud Promo",
+      "team": "Enterprise Core",
+      "city": "Paris",
+      "country": "France"
+    },
+    {
+      "id": "l_4",
+      "name": "Donald Trump Jr.",
+      "company": "Trump Heights Real Estate",
+      "email": "djunior@trumpheights.com",
+      "phone": "+1 (555) 0244",
+      "source": "Manual Entry",
+      "serviceType": "Service Based",
+      "category": "Real Estate",
+      "status": "New",
+      "assignedUser": "Kyle Reese",
+      "createdDate": "2026-06-22",
+      "notes": "Met at property tech expo. Requesting custom CRM portal integrations.",
+      "campaign": "Tech Expo 2026",
+      "team": "Sales Team Alpha",
+      "city": "New York",
+      "country": "United States"
+    },
+    {
+      "id": "l_5",
+      "name": "Jeff Bezos",
+      "company": "Amazon Fulfillment Logistics",
+      "email": "bezos@fulfillment.org",
+      "phone": "+1 (555) 0255",
+      "source": "Email",
+      "serviceType": "Product Based",
+      "category": "Logistics",
+      "status": "New",
+      "assignedUser": "Sarah Connor",
+      "createdDate": "2026-06-23",
+      "notes": "Inquired about warehouse tracking optimization dashboard licensing.",
+      "campaign": "Summer Cloud Promo",
+      "team": "Sales Team Beta",
+      "city": "Seattle",
+      "country": "United States"
+    }
+  ],
+  "opportunities": [
+    {
+      "id": "o_1",
+      "customerName": "Bruce Wayne",
+      "company": "Wayne Enterprises",
+      "dealValue": 250000,
+      "expectedClosing": "2026-07-24",
+      "assignedSalesperson": "Sarah Connor",
+      "priority": "High",
+      "tags": [
+        "SaaS",
+        "Security"
+      ],
+      "stageId": "p_1",
+      "createdDate": "2026-05-25",
+      "campaign": "None",
+      "team": "Enterprise Core",
+      "city": "Gotham",
+      "country": "United States",
+      "source": "Manual Entry"
+    },
+    {
+      "id": "o_2",
+      "customerName": "Tony Stark",
+      "company": "Stark Industries",
+      "dealValue": 850000,
+      "expectedClosing": "2026-07-09",
+      "assignedSalesperson": "John Doe (SA)",
+      "priority": "High",
+      "tags": [
+        "Enterprise",
+        "AI"
+      ],
+      "stageId": "p_5",
+      "createdDate": "2026-05-10",
+      "campaign": "Tech Expo 2026",
+      "team": "Enterprise Core",
+      "city": "Metropolis",
+      "country": "United States",
+      "source": "Website"
+    },
+    {
+      "id": "o_3",
+      "customerName": "Clark Kent",
+      "company": "Daily Planet Publishing",
+      "dealValue": 45000,
+      "expectedClosing": "2026-08-08",
+      "assignedSalesperson": "Kyle Reese",
+      "priority": "Low",
+      "tags": [
+        "CMS",
+        "Cloud"
+      ],
+      "stageId": "p_6",
+      "createdDate": "2026-04-25",
+      "closedDate": "2026-05-10",
+      "campaign": "Summer Cloud Promo",
+      "team": "Sales Team Alpha",
+      "city": "Metropolis",
+      "country": "United States",
+      "source": "Website"
+    },
+    {
+      "id": "o_4",
+      "customerName": "Peter Parker",
+      "company": "Daily Bugle Photos",
+      "dealValue": 12000,
+      "expectedClosing": "2026-06-29",
+      "assignedSalesperson": "Kyle Reese",
+      "priority": "Medium",
+      "tags": [
+        "Upgrade"
+      ],
+      "stageId": "p_3",
+      "createdDate": "2026-06-14",
+      "campaign": "None",
+      "team": "Sales Team Alpha",
+      "city": "New York",
+      "country": "United States",
+      "source": "Referral"
+    },
+    {
+      "id": "o_5",
+      "customerName": "Lex Luthor",
+      "company": "LexCorp Biotech",
+      "dealValue": 500000,
+      "expectedClosing": "2026-06-04",
+      "assignedSalesperson": "Sarah Connor",
+      "priority": "High",
+      "tags": [
+        "Custom Development"
+      ],
+      "stageId": "p_7",
+      "createdDate": "2026-05-30",
+      "closedDate": "2026-06-23",
+      "campaign": "AI Promo",
+      "team": "Sales Team Beta",
+      "city": "Metropolis",
+      "country": "United States",
+      "source": "Email"
+    }
+  ],
+  "activities": [
+    {
+      "id": "a_1",
+      "title": "Stark Industries Proposal Review",
+      "type": "Meeting",
+      "date": "2026-06-25",
+      "time": "14:00",
+      "duration": "60",
+      "description": "Review the proposal prep with Stark team online.",
+      "salesperson": "John Doe (SA)",
+      "leadId": "",
+      "opportunityId": "o_2",
+      "done": false
+    },
+    {
+      "id": "a_2",
+      "title": "Wayne Enterprises Discovery Call",
+      "type": "Call",
+      "date": "2026-06-22",
+      "time": "10:30",
+      "duration": "30",
+      "description": "Introduce Odoo style platform integrations.",
+      "salesperson": "Sarah Connor",
+      "leadId": "",
+      "opportunityId": "o_1",
+      "done": false
+    },
+    {
+      "id": "a_3",
+      "title": "Send Quote to Blackwell Clinic",
+      "type": "Email",
+      "date": "2026-06-24",
+      "time": "09:00",
+      "duration": "15",
+      "description": "Email quotation for hospital upgrade.",
+      "salesperson": "Kyle Reese",
+      "leadId": "l_1",
+      "opportunityId": "",
+      "done": false
+    },
+    {
+      "id": "a_4",
+      "title": "Follow-up with Donald Trump Jr.",
+      "type": "Follow-up",
+      "date": "2026-06-27",
+      "time": "16:00",
+      "duration": "20",
+      "description": "Answer question about CRM integrations.",
+      "salesperson": "Kyle Reese",
+      "leadId": "l_4",
+      "opportunityId": "",
+      "done": false
+    },
+    {
+      "id": "a_5",
+      "title": "Contract Negotiation Meeting",
+      "type": "Meeting",
+      "date": "2026-06-28",
+      "time": "11:00",
+      "duration": "90",
+      "description": "Final pricing discussions with Stark Corp.",
+      "salesperson": "John Doe (SA)",
+      "leadId": "",
+      "opportunityId": "o_2",
+      "done": false
+    }
+  ],
+  "emails": [
+    {
+      "id": "e_1",
+      "sender": "tony@starkindustries.com",
+      "recipient": "superadmin@crm.com",
+      "subject": "Re: Stark CRM Proposal Draft",
+      "body": "The proposal looks great John, but we need to ensure the Recharts analytics widget can ingest 50k events per second. Let's discuss in our meeting tomorrow.",
+      "folder": "Inbox",
+      "date": "2026-06-23T14:32:00Z",
+      "read": false,
+      "replied": false,
+      "bounced": false,
+      "threadId": "th_stark_1",
+      "history": [
+        {
+          "sender": "superadmin@crm.com",
+          "body": "Hi Tony, attached is the draft proposal. Please let me know your thoughts.",
+          "date": "2026-06-22T09:15:00Z"
+        },
+        {
+          "sender": "tony@starkindustries.com",
+          "body": "Thanks, checking it now.",
+          "date": "2026-06-22T11:45:00Z"
+        }
+      ]
+    },
+    {
+      "id": "e_2",
+      "sender": "bruce@waynecorp.com",
+      "recipient": "admin@crm.com",
+      "subject": "Wayne Enterprises - Contract Updates",
+      "body": "Sarah, I have requested my legal team to review the liability terms. Please expect updates by Thursday.",
+      "folder": "Inbox",
+      "date": "2026-06-22T10:11:00Z",
+      "read": true,
+      "replied": true,
+      "bounced": false,
+      "threadId": "th_wayne_1",
+      "history": []
+    },
+    {
+      "id": "e_3",
+      "sender": "superadmin@crm.com",
+      "recipient": "clark@dailyplanet.com",
+      "subject": "Welcome to CRM - Auto Enrollment Code",
+      "body": "Hi Clark, congratulations on closing the deal! You are now auto-enrolled in our CRM Referral Program. Your referral code is REF-CLARK-99.",
+      "folder": "Sent",
+      "date": "2026-06-20T16:00:00Z",
+      "read": true,
+      "replied": false,
+      "bounced": false,
+      "threadId": "th_clark_ref_1",
+      "history": []
+    },
+    {
+      "id": "e_4",
+      "sender": "error-daemon@outlook.com",
+      "recipient": "user@crm.com",
+      "subject": "Delivery Status Notification (Failure)",
+      "body": "The mail system failed to deliver the message to bad-email@unknown-hospital.org because the domain does not exist.",
+      "folder": "Trash",
+      "date": "2026-06-21T18:22:00Z",
+      "read": true,
+      "replied": false,
+      "bounced": true,
+      "threadId": "th_bounce_1",
+      "history": []
+    }
+  ],
+  "quotations": [
+    {
+      "id": "q_1",
+      "quoteNumber": "QT-2026-001",
+      "clientName": "Clark Kent",
+      "company": "Daily Planet Publishing",
+      "opportunityId": "o_3",
+      "date": "2026-04-25",
+      "status": "Approved",
+      "taxRate": 8,
+      "discount": 2500,
+      "items": [
+        {
+          "description": "Enterprise Portal License (1 Year)",
+          "qty": 50,
+          "price": 800,
+          "total": 40000
+        },
+        {
+          "description": "Custom Dashboard Widget Module",
+          "qty": 1,
+          "price": 7500,
+          "total": 7500
+        }
+      ],
+      "subtotal": 47500,
+      "taxAmount": 3800,
+      "grandTotal": 48800
+    },
+    {
+      "id": "q_2",
+      "quoteNumber": "QT-2026-002",
+      "clientName": "Tony Stark",
+      "company": "Stark Industries",
+      "opportunityId": "o_2",
+      "date": "2026-06-19",
+      "status": "Sent",
+      "taxRate": 10,
+      "discount": 50000,
+      "items": [
+        {
+          "description": "Dedicated CRM Server Clustering Setup",
+          "qty": 2,
+          "price": 200000,
+          "total": 400000
+        },
+        {
+          "description": "Premium API Integration & Support Tier",
+          "qty": 1,
+          "price": 500000,
+          "total": 500000
+        }
+      ],
+      "subtotal": 900000,
+      "taxAmount": 90000,
+      "grandTotal": 940000
+    },
+    {
+      "id": "q_3",
+      "quoteNumber": "QT-2026-003",
+      "clientName": "Bruce Wayne",
+      "company": "Wayne Enterprises",
+      "opportunityId": "o_1",
+      "date": "2026-06-23",
+      "status": "Draft",
+      "taxRate": 8,
+      "discount": 10000,
+      "items": [
+        {
+          "description": "Cloud CRM SaaS Instance Setup",
+          "qty": 1,
+          "price": 150000,
+          "total": 150000
+        },
+        {
+          "description": "Consulting & Implementation Training",
+          "qty": 20,
+          "price": 5000,
+          "total": 100000
+        }
+      ],
+      "subtotal": 250000,
+      "taxAmount": 20000,
+      "grandTotal": 260000
+    }
+  ],
+  "referrals": [
+    {
+      "id": "ref_1",
+      "referrerName": "Clark Kent",
+      "referrerCompany": "Daily Planet Publishing",
+      "referredLeadName": "Lois Lane",
+      "referredCompany": "Metropolis Gazette",
+      "dealValue": 75000,
+      "stage": "rp_3",
+      "dateSubmitted": "2026-06-09",
+      "rewardType": "Credits",
+      "rewardValue": "$1,500 CRM Credits",
+      "rewardApproved": false
+    },
+    {
+      "id": "ref_2",
+      "referrerName": "Clark Kent",
+      "referrerCompany": "Daily Planet Publishing",
+      "referredLeadName": "Perry White",
+      "referredCompany": "Tribune Press Group",
+      "dealValue": 120000,
+      "stage": "rp_5",
+      "dateSubmitted": "2026-05-15",
+      "rewardType": "Discount on Future Projects",
+      "rewardValue": "15% Renewal Discount",
+      "rewardApproved": true
+    }
+  ],
+  "companyBranding": {
+    "name": "Global CRM Cloud",
+    "primaryColor": "#2563EB",
+    "secondaryColor": "#0F172A",
+    "logoText": "Odoo CRM Pro"
+  },
+  "auditLogs": [
+    {
+      "id": "log_1782299556951_zhiua",
+      "timestamp": "2026-06-24T11:12:36.951Z",
+      "user": "System",
+      "role": "System",
+      "action": "UPDATE_ACTIVITY",
+      "module": "Activities",
+      "details": "Updated activity ID: a_1"
+    },
+    {
+      "id": "log_1782299547317_f5cj0",
+      "timestamp": "2026-06-24T11:12:27.317Z",
+      "user": "System",
+      "role": "System",
+      "action": "UPDATE_ACTIVITY",
+      "module": "Activities",
+      "details": "Updated activity ID: a_1"
+    },
+    {
+      "id": "log_1782299544441_w5zh9",
+      "timestamp": "2026-06-24T11:12:24.441Z",
+      "user": "System",
+      "role": "System",
+      "action": "UPDATE_ACTIVITY",
+      "module": "Activities",
+      "details": "Updated activity ID: a_1"
+    },
+    {
+      "id": "log_1782299541130_dze4l",
+      "timestamp": "2026-06-24T11:12:21.130Z",
+      "user": "System",
+      "role": "System",
+      "action": "UPDATE_ACTIVITY",
+      "module": "Activities",
+      "details": "Updated activity ID: a_1"
+    },
+    {
+      "id": "log_1782299517639_kuq3e",
+      "timestamp": "2026-06-24T11:11:57.639Z",
+      "user": "System",
+      "role": "System",
+      "action": "UPDATE_ACTIVITY",
+      "module": "Activities",
+      "details": "Updated activity ID: a_2"
+    },
+    {
+      "id": "log_1782299515761_saxus",
+      "timestamp": "2026-06-24T11:11:55.761Z",
+      "user": "System",
+      "role": "System",
+      "action": "UPDATE_ACTIVITY",
+      "module": "Activities",
+      "details": "Updated activity ID: a_1"
+    },
+    {
+      "id": "log_1782299513169_vs36u",
+      "timestamp": "2026-06-24T11:11:53.169Z",
+      "user": "System",
+      "role": "System",
+      "action": "UPDATE_ACTIVITY",
+      "module": "Activities",
+      "details": "Updated activity ID: a_1"
+    },
+    {
+      "id": "log_1782298228503_a5bzq",
+      "timestamp": "2026-06-24T10:50:28.503Z",
+      "user": "John Doe (SA)",
+      "role": "Super Admin",
+      "action": "LOGIN",
+      "module": "Authentication",
+      "details": "User logged in from IP."
+    },
+    {
+      "id": "log_1782297760656_ug093",
+      "timestamp": "2026-06-24T10:42:40.656Z",
+      "user": "System",
+      "role": "System",
+      "action": "REORDER_PIPELINE",
+      "module": "Settings",
+      "details": "Reordered pipeline stages"
+    },
+    {
+      "id": "log_1782297758841_bico2",
+      "timestamp": "2026-06-24T10:42:38.841Z",
+      "user": "System",
+      "role": "System",
+      "action": "REORDER_PIPELINE",
+      "module": "Settings",
+      "details": "Reordered pipeline stages"
+    },
+    {
+      "id": "log_1782297756177_68s4o",
+      "timestamp": "2026-06-24T10:42:36.177Z",
+      "user": "System",
+      "role": "System",
+      "action": "REORDER_PIPELINE",
+      "module": "Settings",
+      "details": "Reordered pipeline stages"
+    },
+    {
+      "id": "log_1782297753636_5eqtm",
+      "timestamp": "2026-06-24T10:42:33.636Z",
+      "user": "System",
+      "role": "System",
+      "action": "REORDER_PIPELINE",
+      "module": "Settings",
+      "details": "Reordered pipeline stages"
+    },
+    {
+      "id": "log_1782297751311_lrve3",
+      "timestamp": "2026-06-24T10:42:31.311Z",
+      "user": "System",
+      "role": "System",
+      "action": "REORDER_PIPELINE",
+      "module": "Settings",
+      "details": "Reordered pipeline stages"
+    },
+    {
+      "id": "log_1782297715130_u8hse",
+      "timestamp": "2026-06-24T10:41:55.130Z",
+      "user": "System",
+      "role": "System",
+      "action": "UPDATE_OPPORTUNITY",
+      "module": "Opportunities",
+      "details": "Updated opportunity: Daily Bugle Photos (Stage: p_3)"
+    },
+    {
+      "id": "log_1782297710990_wjtrm",
+      "timestamp": "2026-06-24T10:41:50.990Z",
+      "user": "System",
+      "role": "System",
+      "action": "UPDATE_OPPORTUNITY",
+      "module": "Opportunities",
+      "details": "Updated opportunity: Wayne Enterprises (Stage: p_1)"
+    },
+    {
+      "id": "log_1782297708566_fxg0n",
+      "timestamp": "2026-06-24T10:41:48.566Z",
+      "user": "System",
+      "role": "System",
+      "action": "UPDATE_OPPORTUNITY",
+      "module": "Opportunities",
+      "details": "Updated opportunity: Daily Bugle Photos (Stage: p_1)"
+    },
+    {
+      "id": "log_1782297706780_4ugi0",
+      "timestamp": "2026-06-24T10:41:46.782Z",
+      "user": "System",
+      "role": "System",
+      "action": "UPDATE_OPPORTUNITY",
+      "module": "Opportunities",
+      "details": "Updated opportunity: Daily Bugle Photos (Stage: p_2)"
+    },
+    {
+      "id": "log_1782296129709_04lgx",
+      "timestamp": "2026-06-24T10:15:29.709Z",
+      "user": "System",
+      "role": "System",
+      "action": "UPDATE_OPPORTUNITY",
+      "module": "Opportunities",
+      "details": "Updated opportunity: Daily Bugle Photos (Stage: p_1)"
+    },
+    {
+      "id": "log_init",
+      "timestamp": "2026-06-24T10:14:16.329Z",
+      "user": "System",
+      "role": "System",
+      "action": "INITIALIZE",
+      "module": "Database",
+      "details": "CRM Mock DB initialized."
+    }
+  ]
+}
