@@ -109,24 +109,6 @@
   ],
   "leads": [
     {
-      "id": "l_1",
-      "name": "Dr. Elizabeth Blackwell",
-      "company": "Blackwell Clinic Group",
-      "email": "eblackwell@blackwellclinic.com",
-      "phone": "+1 (555) 0211",
-      "source": "Website",
-      "serviceType": "Service Based",
-      "category": "Healthcare",
-      "status": "New",
-      "assignedUser": "Kyle Reese",
-      "createdDate": "2026-06-12",
-      "notes": "Interested in full suite software upgrades for 4 hospitals.",
-      "campaign": "Tech Expo 2026",
-      "team": "Sales Team Alpha",
-      "city": "Detroit",
-      "country": "United States"
-    },
-    {
       "id": "l_2",
       "name": "Henry Ford II",
       "company": "Ford Manufacturing Labs",
@@ -272,7 +254,7 @@
       "tags": [
         "Upgrade"
       ],
-      "stageId": "p_3",
+      "stageId": "p_2",
       "createdDate": "2026-06-14",
       "campaign": "None",
       "team": "Sales Team Alpha",
@@ -473,7 +455,7 @@
       "company": "Stark Industries",
       "opportunityId": "o_2",
       "date": "2026-06-19",
-      "status": "Sent",
+      "status": "Rejected",
       "taxRate": 10,
       "discount": 50000,
       "items": [
@@ -501,7 +483,7 @@
       "company": "Wayne Enterprises",
       "opportunityId": "o_1",
       "date": "2026-06-23",
-      "status": "Draft",
+      "status": "Approved",
       "taxRate": 8,
       "discount": 10000,
       "items": [
@@ -558,6 +540,123 @@
     "logoText": "CRM 360"
   },
   "auditLogs": [
+    {
+      "id": "log_1782377411942_aaqxk",
+      "timestamp": "2026-06-25T08:50:11.942Z",
+      "user": "System",
+      "role": "System",
+      "action": "UPDATE_OPPORTUNITY",
+      "module": "Opportunities",
+      "details": "Updated opportunity: Daily Bugle Photos (Stage: p_2)"
+    },
+    {
+      "id": "log_1782377324234_xwjch",
+      "timestamp": "2026-06-25T08:48:44.234Z",
+      "user": "System",
+      "role": "System",
+      "action": "UPDATE_QUOTATION",
+      "module": "Quotations",
+      "details": "Updated quotation: QT-2026-003 (Status: Approved)"
+    },
+    {
+      "id": "log_1782377322606_kuaan",
+      "timestamp": "2026-06-25T08:48:42.606Z",
+      "user": "System",
+      "role": "System",
+      "action": "UPDATE_QUOTATION",
+      "module": "Quotations",
+      "details": "Updated quotation: QT-2026-003 (Status: Rejected)"
+    },
+    {
+      "id": "log_1782377321616_sk3gv",
+      "timestamp": "2026-06-25T08:48:41.616Z",
+      "user": "System",
+      "role": "System",
+      "action": "UPDATE_QUOTATION",
+      "module": "Quotations",
+      "details": "Updated quotation: QT-2026-003 (Status: Approved)"
+    },
+    {
+      "id": "log_1782377319636_50c12",
+      "timestamp": "2026-06-25T08:48:39.636Z",
+      "user": "System",
+      "role": "System",
+      "action": "UPDATE_QUOTATION",
+      "module": "Quotations",
+      "details": "Updated quotation: QT-2026-002 (Status: Rejected)"
+    },
+    {
+      "id": "log_1782377299862_lxc9m",
+      "timestamp": "2026-06-25T08:48:19.862Z",
+      "user": "System",
+      "role": "System",
+      "action": "UPDATE_QUOTATION",
+      "module": "Quotations",
+      "details": "Updated quotation: QT-2026-003 (Status: Approved)"
+    },
+    {
+      "id": "log_1782377142159_evtjf",
+      "timestamp": "2026-06-25T08:45:42.159Z",
+      "user": "System",
+      "role": "System",
+      "action": "UPDATE_OPPORTUNITY",
+      "module": "Opportunities",
+      "details": "Updated opportunity: Daily Bugle Photos (Stage: p_3)"
+    },
+    {
+      "id": "log_1782377139838_hke3c",
+      "timestamp": "2026-06-25T08:45:39.838Z",
+      "user": "System",
+      "role": "System",
+      "action": "UPDATE_OPPORTUNITY",
+      "module": "Opportunities",
+      "details": "Updated opportunity: Daily Bugle Photos (Stage: p_2)"
+    },
+    {
+      "id": "log_1782377138371_v55mw",
+      "timestamp": "2026-06-25T08:45:38.371Z",
+      "user": "System",
+      "role": "System",
+      "action": "UPDATE_OPPORTUNITY",
+      "module": "Opportunities",
+      "details": "Updated opportunity: Daily Bugle Photos (Stage: p_2)"
+    },
+    {
+      "id": "log_1782377102440_g6n5n",
+      "timestamp": "2026-06-25T08:45:02.440Z",
+      "user": "System",
+      "role": "System",
+      "action": "DELETE_LEAD",
+      "module": "Leads",
+      "details": "Deleted lead: Dr. Elizabeth Blackwell (Blackwell Clinic Group)"
+    },
+    {
+      "id": "log_1782377057077_gyvbw",
+      "timestamp": "2026-06-25T08:44:17.077Z",
+      "user": "Kyle Reese",
+      "role": "User",
+      "action": "LOGIN",
+      "module": "Authentication",
+      "details": "User logged in from IP."
+    },
+    {
+      "id": "log_1782377006369_y5vs7",
+      "timestamp": "2026-06-25T08:43:26.369Z",
+      "user": "John Doe (SA)",
+      "role": "Super Admin",
+      "action": "LOGIN",
+      "module": "Authentication",
+      "details": "User logged in from IP."
+    },
+    {
+      "id": "log_1782377005384_bsw94",
+      "timestamp": "2026-06-25T08:43:25.384Z",
+      "user": "John Doe (SA)",
+      "role": "Super Admin",
+      "action": "LOGIN",
+      "module": "Authentication",
+      "details": "User logged in from IP."
+    },
     {
       "id": "log_1782299556951_zhiua",
       "timestamp": "2026-06-24T11:12:36.951Z",
