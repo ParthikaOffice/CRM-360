@@ -104,7 +104,7 @@ export const CRMProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [searchQuery, setSearchQuery] = useState('');
   const [toasts, setToasts] = useState<any[]>([]);
 
-  // Odoo Filter Drawer state
+ 
   const [showFilterDrawer, setShowFilterDrawer] = useState(false);
   const [activeFilters, setActiveFilters] = useState<any>({
     myPipeline: false,
