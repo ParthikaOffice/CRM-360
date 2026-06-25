@@ -63,7 +63,7 @@ export default function LeadsView({
   return (
     <div className="bg-card border border-border-crm rounded-2xl shadow-xs overflow-hidden text-xs">
       
-      {/* Table layout */}
+     
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>

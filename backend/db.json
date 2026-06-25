@@ -521,6 +521,32 @@
       "subtotal": 250000,
       "taxAmount": 20000,
       "grandTotal": 260000
+    },
+    {
+      "id": "q_1782377244516",
+      "quoteNumber": "QT-2026-04",
+      "clientName": "yashika",
+      "company": "google",
+      "opportunityId": "",
+      "date": "2026-06-25",
+      "status": "Draft",
+      "items": [
+        {
+          "description": "abcd",
+          "qty": 4,
+          "price": 0
+        },
+        {
+          "description": "efg",
+          "qty": 1,
+          "price": 0
+        }
+      ],
+      "taxRate": 8,
+      "discount": 0,
+      "subtotal": 0,
+      "taxAmount": 0,
+      "grandTotal": 0
     }
   ],
   "referrals": [
@@ -558,6 +584,24 @@
     "logoText": "CRM 360"
   },
   "auditLogs": [
+    {
+      "id": "log_1782377244517_p48js",
+      "timestamp": "2026-06-25T08:47:24.517Z",
+      "user": "System",
+      "role": "System",
+      "action": "CREATE_QUOTATION",
+      "module": "Quotations",
+      "details": "Created quotation QT-2026-04 for google ($0)"
+    },
+    {
+      "id": "log_1782377087361_53pfq",
+      "timestamp": "2026-06-25T08:44:47.361Z",
+      "user": "John Doe (SA)",
+      "role": "Super Admin",
+      "action": "LOGIN",
+      "module": "Authentication",
+      "details": "User logged in from IP."
+    },
     {
       "id": "log_1782299556951_zhiua",
       "timestamp": "2026-06-24T11:12:36.951Z",

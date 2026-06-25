@@ -242,6 +242,7 @@ export default function ShellLayout({ children }: { children: React.ReactNode })
                   <Plus className="w-3.5 h-3.5" />
                   <span>Create Lead</span>
                 </button>
+                
               )}
               {currentTab === 'opportunities' && crm.user?.role === 'Super Admin' && (
                 <button
