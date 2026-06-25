@@ -10,7 +10,7 @@ interface ReferralsViewProps {
   setShowReferralModal: (val: boolean) => void;
   referralForm: any;
   setReferralForm: (form: any) => void;
-  onSubmitReferral: (e: React.FormEvent) => void;
+  onSubmitReferral: (form: any) => void;
   onApproveReward: (id: string) => void;
 }
 
@@ -26,6 +26,11 @@ export default function ReferralsView({
   onSubmitReferral,
   onApproveReward
 }: ReferralsViewProps) {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmitReferral(referralForm);
+  };
+
   return (
     <div className="space-y-6 text-xs text-slate-800 dark:text-slate-200">
       
@@ -159,7 +164,7 @@ export default function ReferralsView({
         <div className="fixed inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4 z-50">
           <div className="bg-card border border-border-crm rounded-2xl shadow-2xl p-6 max-w-sm w-full text-txt-primary">
             <h4 className="font-bold text-sm tracking-tight mb-4">Submit Customer Referral</h4>
-            <form onSubmit={onSubmitReferral} className="space-y-3 text-xs">
+            <form onSubmit={handleSubmit} className="space-y-3 text-xs">
               <div>
                 <label className="block text-slate-400 font-semibold mb-1">Referrer Name (Won Customer)</label>
                 <select

@@ -251,7 +251,7 @@ function seedDatabase() {
       name: 'Global CRM Cloud',
       primaryColor: '#2563EB',
       secondaryColor: '#0F172A',
-      logoText: 'Odoo CRM Pro'
+      logoText: 'CRM 360'
     },
     auditLogs: [
       { id: 'log_init', timestamp: new Date().toISOString(), user: 'System', role: 'System', action: 'INITIALIZE', module: 'Database', details: 'CRM Mock DB initialized.' }
@@ -261,8 +261,6 @@ function seedDatabase() {
   return db;
 }
 
-// REST APIs
-// ----------------------------------------------------
 
 // Auth routes
 app.post('/api/auth/login', (req, res) => {
@@ -419,7 +417,7 @@ app.post('/api/leads/:id/convert', (req, res) => {
   const lead = db.leads[leadIndex];
   db.leads.splice(leadIndex, 1); // remove from leads
 
-  // Add to opportunities
+
   const newOpportunity = {
     id: 'o_' + Date.now(),
     customerName: lead.name,

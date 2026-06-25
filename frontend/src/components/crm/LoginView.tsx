@@ -27,7 +27,7 @@ export default function LoginView({
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden text-slate-800">
         <div className="bg-primary p-8 text-white text-center">
-          <h1 className="text-2xl font-bold tracking-tight">Odoo CRM Enterprise</h1>
+          <h1 className="text-2xl font-bold tracking-tight">CRM 360</h1>
           <p className="text-blue-100 mt-2 text-sm">Unified Platform for High-Performance Enterprise Sales</p>
         </div>
 
