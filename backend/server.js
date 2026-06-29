@@ -3,13 +3,20 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
+require("dotenv").config();
 
+console.log(process.env.DATABASE_URL);
 const app = express();
 const PORT = process.env.PORT || 5000;
 const DB_FILE = path.join(__dirname, 'db.json');
+const leadRoutes = require("./src/routes/leadRoutes.js");
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
 app.use(cors());
 app.use(bodyParser.json());
+
+app.use("/api/leads", leadRoutes);
 
 
 function readDB() {
@@ -230,7 +237,7 @@ function seedDatabase() {
         stage: 'rp_3', // Proposal
         dateSubmitted: subDays(15),
         rewardType: 'Credits',
-        rewardValue: '$1,500 CRM Credits',
+        rewardValue: '₹1,500 CRM Credits',
         rewardApproved: false
       },
       {
@@ -358,6 +365,8 @@ app.get('/api/services', (req, res) => {
 });
 
 // Leads
+
+
 app.get('/api/leads', (req, res) => {
   const db = readDB();
   res.json(db.leads);
@@ -405,34 +414,58 @@ app.delete('/api/leads/:id', (req, res) => {
 });
 
 // Convert Lead to Opportunity
-app.post('/api/leads/:id/convert', (req, res) => {
+app.post('/api/leads/:id/convert', async (req, res) => {
   const { id } = req.params;
   const { dealValue, salesperson } = req.body;
   const db = readDB();
+  
+  // Find lead in db.json
   const leadIndex = db.leads.findIndex(l => l.id === id);
-  if (leadIndex === -1) {
+  let lead = null;
+  if (leadIndex !== -1) {
+    lead = db.leads[leadIndex];
+    db.leads[leadIndex].status = 'New'; // set status to New instead of deleting
+  }
+
+  // Find lead in PostgreSQL Prisma
+  let prismaLead = null;
+  try {
+    prismaLead = await prisma.lead.findUnique({ where: { id } });
+    if (prismaLead) {
+      await prisma.lead.update({
+        where: { id },
+        data: { status: 'New' }
+      });
+    }
+  } catch (err) {
+    console.error("Prisma error during lead conversion:", err);
+  }
+
+  if (!lead && !prismaLead) {
     return res.status(404).json({ message: 'Lead not found' });
   }
 
-  const lead = db.leads[leadIndex];
-  db.leads.splice(leadIndex, 1); // remove from leads
-
+  const finalLead = lead || prismaLead;
+  const sortedPipelines = [...db.pipelines].sort((a, b) => a.order - b.order);
+  const newStage = db.pipelines.find(p => p.name.toLowerCase() === 'new') || sortedPipelines[0];
+  const stageId = newStage ? newStage.id : 'p_1';
 
   const newOpportunity = {
     id: 'o_' + Date.now(),
-    customerName: lead.name,
-    company: lead.company,
+    leadId: id, // Link to the original lead
+    customerName: finalLead.contactName || finalLead.name || 'Unknown',
+    company: finalLead.company,
     dealValue: Number(dealValue) || 10000,
     expectedClosing: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-    assignedSalesperson: salesperson || lead.assignedUser || 'Kyle Reese',
+    assignedSalesperson: salesperson || finalLead.assignedUser || 'Kyle Reese',
     priority: 'Medium',
-    tags: [lead.source, lead.category],
-    stageId: 'p_1', // Starts at "New" pipeline stage
+    tags: [finalLead.source || 'CSV/Excel Import', finalLead.category || 'IT Services'],
+    stageId: stageId, // Starts at the dynamic "New" pipeline stage
     createdDate: new Date().toISOString().split('T')[0]
   };
 
   db.opportunities.push(newOpportunity);
-  logActivity(db, null, 'CONVERT_LEAD', 'Leads', `Converted lead ${lead.name} into Opportunity (Valued at $${newOpportunity.dealValue})`);
+  logActivity(db, null, 'CONVERT_LEAD', 'Leads', `Converted lead ${newOpportunity.customerName} into Opportunity (Valued at ₹${newOpportunity.dealValue})`);
   writeDB(db);
   res.json({ message: 'Lead converted successfully', opportunity: newOpportunity });
 });
@@ -564,13 +597,14 @@ app.post('/api/opportunities', (req, res) => {
   res.status(201).json(opp);
 });
 
-app.put('/api/opportunities/:id', (req, res) => {
+app.put('/api/opportunities/:id', async (req, res) => {
   const { id } = req.params;
   const db = readDB();
   const index = db.opportunities.findIndex(o => o.id === id);
   if (index !== -1) {
     const oldOpp = db.opportunities[index];
     db.opportunities[index] = { ...oldOpp, ...req.body };
+    const updatedOpp = db.opportunities[index];
 
     // Auto-enroll in referrals if stage changed to Won ('p_6')
     if (req.body.stageId === 'p_6' && oldOpp.stageId !== 'p_6') {
@@ -586,12 +620,53 @@ app.put('/api/opportunities/:id', (req, res) => {
           stage: 'rp_1',
           dateSubmitted: new Date().toISOString().split('T')[0],
           rewardType: 'Credits',
-          rewardValue: '$1,000 Credits',
+          rewardValue: '₹1,000 Credits',
           rewardApproved: false,
           placeholder: true
         };
         db.referrals.push(newReferral);
         logActivity(db, null, 'REFERRAL_AUTO_ENROLL', 'Referral Program', `Auto-enrolled client ${oldOpp.customerName} in referral program.`);
+      }
+    }
+
+    // Update status of the original lead in both db.json and PostgreSQL when dragged/moved
+    if (req.body.stageId && oldOpp.stageId !== req.body.stageId) {
+      const stage = db.pipelines.find(p => p.id === req.body.stageId);
+      if (stage) {
+        const statusName = stage.name;
+
+        // 1. Update in db.leads
+        const leadId = updatedOpp.leadId;
+        let leadIndex = -1;
+        if (leadId) {
+          leadIndex = db.leads.findIndex(l => l.id === leadId);
+        } else {
+          leadIndex = db.leads.findIndex(l => (l.contactName === updatedOpp.customerName || l.name === updatedOpp.customerName) && l.company === updatedOpp.company);
+        }
+
+        if (leadIndex !== -1) {
+          db.leads[leadIndex].status = statusName;
+        }
+
+        // 2. Update in PostgreSQL
+        try {
+          if (leadId) {
+            await prisma.lead.update({
+              where: { id: leadId },
+              data: { status: statusName }
+            });
+          } else {
+            await prisma.lead.updateMany({
+              where: {
+                contactName: updatedOpp.customerName,
+                company: updatedOpp.company
+              },
+              data: { status: statusName }
+            });
+          }
+        } catch (err) {
+          console.error("Prisma error during opportunity stage move:", err);
+        }
       }
     }
 
@@ -727,7 +802,7 @@ app.post('/api/quotations', (req, res) => {
   };
 
   db.quotations.push(quote);
-  logActivity(db, null, 'CREATE_QUOTATION', 'Quotations', `Created quotation ${quote.quoteNumber} for ${quote.company} ($${quote.grandTotal})`);
+  logActivity(db, null, 'CREATE_QUOTATION', 'Quotations', `Created quotation ${quote.quoteNumber} for ${quote.company} (₹${quote.grandTotal})`);
   writeDB(db);
   res.status(201).json(quote);
 });

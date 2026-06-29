@@ -2,7 +2,7 @@ import React from 'react';
 import {
   BarChart3,
   ClipboardList,
-  DollarSign,
+  IndianRupee,
   TrendingUp,
   Users,
   Calendar as CalendarIcon,
@@ -30,14 +30,22 @@ export default function DashboardView({
     <div className="space-y-6">
       
       {/* Executive KPI Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
         {/* Total Leads Card */}
         <div className="bg-card rounded-2xl p-5 border border-border-crm shadow-xs transition hover:shadow">
           <div className="flex justify-between items-start">
             <div className="space-y-1">
               <p className="text-xs font-bold text-txt-secondary uppercase tracking-wide">Total Leads</p>
-              <h3 className="text-3xl font-extrabold text-txt-primary">{leads.length}</h3>
+              <h3 className="text-3xl font-extrabold text-txt-primary">
+  {
+    leads.filter(
+      lead => !opportunities.some(
+        opp => opp.leadId === lead.id
+      )
+    ).length
+  }
+</h3>
             </div>
             <div className="p-3 bg-blue-50 text-primary rounded-xl">
               <Users className="w-5 h-5" />
@@ -77,11 +85,11 @@ export default function DashboardView({
             <div className="space-y-1">
               <p className="text-xs font-bold text-txt-secondary uppercase tracking-wide">Revenue (Won)</p>
               <h3 className="text-3xl font-extrabold text-txt-primary">
-                ${opportunities.filter(o => o.stageId === 'p_6').reduce((sum, o) => sum + o.dealValue, 0).toLocaleString()}
+                ₹{opportunities.filter(o => o.stageId === 'p_6').reduce((sum, o) => sum + o.dealValue, 0).toLocaleString()}
               </h3>
             </div>
             <div className="p-3 bg-emerald-50 text-success rounded-xl">
-              <DollarSign className="w-5 h-5" />
+              <IndianRupee className="w-5 h-5" />
             </div>
           </div>
           <div className="flex items-center space-x-1.5 mt-3 text-xs">
@@ -143,37 +151,55 @@ export default function DashboardView({
             })}
           </div>
         </div>
-
+ <div className="bg-card border border-border-crm rounded-2xl p-5 space-y-4">
+          <h4 className="font-bold text-xs uppercase tracking-wider text-txt-secondary">Recent Leads Added</h4>
+          <div className="space-y-3">
+            {leads.slice(0, 4).map(ld => (
+              <div key={ld.id} className="flex items-center justify-between p-2 hover:bg-bg-main rounded-xl transition text-txt-primary">
+                <div className="text-xs min-w-0">
+                  <p className="font-bold truncate">{ld.name}</p>
+                  <p className="text-txt-secondary text-[10px] truncate">{ld.company}</p>
+                </div>
+                <span className="bg-blue-50 text-primary text-[10px] px-2 py-0.5 rounded-lg border border-blue-100 font-semibold shrink-0">
+                  {ld.category}
+                </span>
+              </div>
+            ))}
+            {leads.length === 0 && (
+              <div className="text-center py-6 text-txt-secondary text-xs">No leads available.</div>
+            )}
+          </div>
+        </div>
         {/* Lead Sources Distribution (Donut style) */}
-        <div className="bg-card border border-border-crm rounded-2xl p-6">
+        {/* { <div className="bg-card border border-border-crm rounded-2xl p-6">
           <div className="flex justify-between items-center mb-6">
             <h3 className="font-bold text-sm tracking-tight text-txt-primary">Lead Source Distribution</h3>
             <span className="text-xs text-slate-400">Channels contribution</span>
-          </div>
+          </div> */} 
           
-          <div className="flex flex-col sm:flex-row items-center justify-around gap-6">
+          {/* <div className="flex flex-col sm:flex-row items-center justify-around gap-6"> */}
             
             {/* SVG Donut */}
-            <div className="relative w-40 h-40">
+            {/* <div className="relative w-40 h-40">
               <svg viewBox="0 0 36 36" className="w-full h-full transform -rotate-90">
                 <circle cx="18" cy="18" r="15.915" fill="none" stroke="#F1F5F9" strokeWidth="4" />
-                {/* Website: 40% */}
+               
                 <circle cx="18" cy="18" r="15.915" fill="none" stroke="#2563EB" strokeWidth="4.2" strokeDasharray="40 60" strokeDashoffset="0" />
-                {/* Referral: 30% */}
+               
                 <circle cx="18" cy="18" r="15.915" fill="none" stroke="#10B981" strokeWidth="4.2" strokeDasharray="30 70" strokeDashoffset="-40" />
-                {/* Campaign: 20% */}
+          
                 <circle cx="18" cy="18" r="15.915" fill="none" stroke="#F59E0B" strokeWidth="4.2" strokeDasharray="20 80" strokeDashoffset="-70" />
-                {/* Email/Manual: 10% */}
+           
                 <circle cx="18" cy="18" r="15.915" fill="none" stroke="#EF4444" strokeWidth="4.2" strokeDasharray="10 90" strokeDashoffset="-90" />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
                 <span className="text-2xl font-bold tracking-tight text-txt-primary">5</span>
                 <span className="text-[10px] text-slate-400 uppercase font-semibold">Total Leads</span>
               </div>
-            </div>
+            </div> */}
 
             {/* Chart Legends */}
-            <div className="space-y-2 text-xs text-txt-primary">
+            {/* <div className="space-y-2 text-xs text-txt-primary">
               <div className="flex items-center space-x-2">
                 <span className="w-3 h-3 rounded-full bg-primary inline-block"></span>
                 <span className="font-semibold">Website (40%)</span>
@@ -192,12 +218,12 @@ export default function DashboardView({
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
       </div>
 
       {/* Dashboard Bottom Widgets Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         
         {/* Upcoming Meetings & Reminders */}
         <div className="bg-card border border-border-crm rounded-2xl p-5 space-y-4">
@@ -232,34 +258,16 @@ export default function DashboardView({
         </div>
 
         {/* Recent Leads Widget */}
-        <div className="bg-card border border-border-crm rounded-2xl p-5 space-y-4">
-          <h4 className="font-bold text-xs uppercase tracking-wider text-txt-secondary">Recent Leads Added</h4>
-          <div className="space-y-3">
-            {leads.slice(0, 4).map(ld => (
-              <div key={ld.id} className="flex items-center justify-between p-2 hover:bg-bg-main rounded-xl transition text-txt-primary">
-                <div className="text-xs min-w-0">
-                  <p className="font-bold truncate">{ld.name}</p>
-                  <p className="text-txt-secondary text-[10px] truncate">{ld.company}</p>
-                </div>
-                <span className="bg-blue-50 text-primary text-[10px] px-2 py-0.5 rounded-lg border border-blue-100 font-semibold shrink-0">
-                  {ld.category}
-                </span>
-              </div>
-            ))}
-            {leads.length === 0 && (
-              <div className="text-center py-6 text-txt-secondary text-xs">No leads available.</div>
-            )}
-          </div>
-        </div>
+       
 
         {/* Sales Team Performance List */}
         <div className="bg-card border border-border-crm rounded-2xl p-5 space-y-4">
           <h4 className="font-bold text-xs uppercase tracking-wider text-txt-secondary">Top Sales Executives</h4>
           <div className="space-y-3">
             {[
-              { name: 'Sarah Connor', quota: '$500,000', closed: '$250,000', rate: 50 },
-              { name: 'John Doe (SA)', quota: '$1,000,000', closed: '$850,000', rate: 85 },
-              { name: 'Kyle Reese', quota: '$250,000', closed: '$45,000', rate: 18 }
+              { name: 'Sarah Connor', quota: '₹500,000', closed: '₹250,000', rate: 50 },
+              { name: 'John Doe (SA)', quota: '₹1,000,000', closed: '₹850,000', rate: 85 },
+              { name: 'Kyle Reese', quota: '₹250,000', closed: '₹45,000', rate: 18 }
             ].map((exec, idx) => (
               <div key={idx} className="space-y-1.5 text-xs text-txt-primary">
                 <div className="flex justify-between font-semibold">

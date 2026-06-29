@@ -20,6 +20,7 @@ export default function OpportunitiesPage() {
       showStageModal={crm.showStageModal}
       setShowStageModal={crm.setShowStageModal}
       addToast={crm.addToast}
+      leads={crm.leads}
     />
   );
 }

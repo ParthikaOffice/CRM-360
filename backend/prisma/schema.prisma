@@ -20,12 +20,11 @@ model Lead {
   id          String   @id @default(cuid())
   contactName String
   company     String?
-  source      String
   email       String?
   phone       String?
   category    String
   serviceType String
+  assignedUser String?
   status      String   @default("New")
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
 }

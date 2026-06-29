@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronRight, Trash2, Plus, X } from 'lucide-react';
+import { ChevronRight, Trash2, Plus, X, Briefcase, Calendar, DollarSign, User, Mail, Phone, Tag, Clipboard, Info, CheckCircle2 } from 'lucide-react';
 
 interface OpportunitiesViewProps {
   opportunities: any[];
@@ -15,6 +15,7 @@ interface OpportunitiesViewProps {
   showStageModal: boolean;
   setShowStageModal: (show: boolean) => void;
   addToast: (type: 'success' | 'error' | 'info', msg: string) => void;
+  leads: any[];
 }
 
 export default function OpportunitiesView({
@@ -30,10 +31,12 @@ export default function OpportunitiesView({
   applyFilters,
   showStageModal,
   setShowStageModal,
-  addToast
+  addToast,
+  leads
 }: OpportunitiesViewProps) {
   const [newStageName, setNewStageName] = useState('');
   const [draggedOppId, setDraggedOppId] = useState<string | null>(null);
+  const [selectedOpp, setSelectedOpp] = useState<any | null>(null);
 
   const handleStageSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,7 +60,6 @@ export default function OpportunitiesView({
     const opp = opportunities.find(o => o.id === draggedOppId);
     if (!opp) return;
 
-    // Check permissions
     if (user?.role === 'User' && opp.assignedSalesperson !== user?.name) {
       addToast('error', 'Access Denied: You can only move opportunities assigned to you');
       setDraggedOppId(null);
@@ -91,7 +93,7 @@ export default function OpportunitiesView({
                   <h4 className="font-bold text-xs text-txt-primary truncate" title={stage.name}>
                     {stage.name}
                   </h4>
-                  <p className="text-[10px] text-txt-secondary mt-0.5">${totalValue.toLocaleString()}</p>
+                  <p className="text-[10px] text-txt-secondary mt-0.5">₹{totalValue.toLocaleString()}</p>
                 </div>
 
                 {/* Controls for stage (Super Admin limits) */}
@@ -129,7 +131,8 @@ export default function OpportunitiesView({
                     key={opp.id}
                     draggable
                     onDragStart={() => handleDragStart(opp.id)}
-                    className="bg-card border border-border-crm rounded-xl p-4 shadow-xs hover:shadow transition-all cursor-grab active:cursor-grabbing text-txt-primary"
+                    onClick={() => setSelectedOpp(opp)}
+                    className="bg-card border border-border-crm rounded-xl p-4 shadow-xs hover:shadow-md hover:border-primary/50 transition-all cursor-pointer text-txt-primary"
                   >
                     <div className="flex justify-between items-start mb-2">
                       <span className="text-[10px] text-slate-400 font-semibold">{opp.company}</span>
@@ -145,7 +148,7 @@ export default function OpportunitiesView({
                     <h5 className="font-bold text-xs text-txt-primary mb-3 leading-tight">{opp.customerName}</h5>
                     
                     <div className="flex items-center justify-between text-xs border-t border-border-crm pt-3">
-                      <span className="font-extrabold text-primary">${opp.dealValue.toLocaleString()}</span>
+                      <span className="font-extrabold text-primary">₹{opp.dealValue.toLocaleString()}</span>
                       <div className="flex items-center space-x-1">
                         <span className="w-5 h-5 bg-slate-100 rounded-full flex items-center justify-center text-[10px] font-bold text-slate-500 uppercase select-none">
                           {opp.assignedSalesperson.substr(0, 2)}
@@ -200,6 +203,149 @@ export default function OpportunitiesView({
           </div>
         </div>
       )}
+
+      {/* Centered Opportunity Detail Modal styled like a Lead Card */}
+      {selectedOpp && (() => {
+        // Find associated lead in leads list or construct from opportunity
+        const associatedLead = leads.find(l => 
+          l.id === selectedOpp.leadId ||
+          ((l.contactName === selectedOpp.customerName || l.name === selectedOpp.customerName) && l.company === selectedOpp.company)
+        ) || {
+          contactName: selectedOpp.customerName,
+          company: selectedOpp.company || '',
+          email: selectedOpp.email || 'info@' + (selectedOpp.company ? selectedOpp.company.toLowerCase().replace(/[^a-z0-9]/g, '') : 'example') + '.com',
+          phone: selectedOpp.phone || '+1 (555) 0100',
+          category: selectedOpp.tags?.[1] || 'IT Services',
+          serviceType: selectedOpp.tags?.[0] || 'Service Based',
+          assignedUser: selectedOpp.assignedSalesperson || 'Kyle Reese',
+          status: pipelines.find(p => p.id === selectedOpp.stageId)?.name || 'New',
+          createdAt: selectedOpp.createdDate || selectedOpp.createdAt || new Date().toISOString().split('T')[0],
+          source: selectedOpp.tags?.[0] || 'Direct Opportunity'
+        };
+
+        // Normalize values
+        const contactName = associatedLead.contactName || associatedLead.name || 'Unknown';
+        const company = associatedLead.company || '';
+        const email = associatedLead.email || '';
+        const phone = associatedLead.phone || '';
+        const category = associatedLead.category || '';
+        const serviceType = associatedLead.serviceType || '';
+        const assignedUser = associatedLead.assignedUser || 'Unassigned';
+        const status = associatedLead.status || 'New';
+        const createdAt = associatedLead.createdDate || associatedLead.createdAt || '';
+
+        return (
+          <div 
+            className="fixed inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4 z-50 transition-all animate-in fade-in duration-200"
+            onClick={() => setSelectedOpp(null)}
+          >
+            <div 
+              className="relative w-full max-w-md bg-card shadow-2xl border border-border-crm rounded-3xl p-6 flex flex-col z-10 text-txt-primary animate-in fade-in zoom-in-95 duration-200"
+              onClick={e => e.stopPropagation()}
+            >
+              {/* Modal Header */}
+              <div className="flex justify-between items-center pb-4 border-b border-border-crm shrink-0 mb-6">
+                <h3 className="font-extrabold text-sm tracking-tight text-txt-primary flex items-center gap-2">
+                  <Briefcase className="w-4.5 h-4.5 text-primary" /> Opportunity Detailed Profile
+                </h3>
+                <button 
+                  onClick={() => setSelectedOpp(null)} 
+                  className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer text-slate-400 hover:text-txt-primary transition-colors"
+                >
+                  <X className="w-4.5 h-4.5" />
+                </button>
+              </div>
+
+              {/* Modal Body (Styled exactly like the Lead detailed timeline card in LeadsView) */}
+              <div className="space-y-6 flex-1 overflow-y-auto">
+                {/* Header profile details */}
+                <div className="bg-slate-50 dark:bg-slate-900/50 border border-slate-150 dark:border-border-crm rounded-xl p-4 space-y-2">
+                  <div className="space-y-1">
+                    <p className="text-slate-400 font-semibold uppercase text-[10px]">Contact Name</p>
+                    <input
+                      type="text"
+                      value={contactName}
+                      readOnly
+                      className="w-full border border-border-crm bg-bg-main dark:bg-slate-900 rounded-lg px-3 py-2 font-bold text-xs focus:outline-none"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-slate-400 font-semibold uppercase text-[10px]">Company</p>
+                    <input
+                      type="text"
+                      value={company}
+                      readOnly
+                      className="w-full border border-border-crm bg-bg-main dark:bg-slate-900 rounded-lg px-3 py-2 text-xs focus:outline-none"
+                    />
+                  </div>
+                  <div className="flex flex-wrap gap-1.5 mt-3">
+                    <span className="bg-blue-50 dark:bg-blue-950/40 text-primary border border-blue-100 dark:border-blue-900 text-[10px] px-2.5 py-0.5 rounded font-semibold">
+                      {category}
+                    </span>
+                    <span className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-[10px] px-2.5 py-0.5 rounded font-semibold">
+                      {associatedLead.source || 'Opportunity'}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Contact stats grid */}
+                <div className="grid grid-cols-2 gap-4 text-xs">
+                  <div className="col-span-2 sm:col-span-1">
+                    <p className="text-slate-400 font-semibold uppercase text-[10px] mb-1">Email</p>
+                    <input
+                      type="email"
+                      value={email}
+                      readOnly
+                      className="w-full border border-border-crm bg-bg-main dark:bg-slate-900 rounded-lg px-3 py-2 focus:outline-none"
+                    />
+                  </div>
+                  <div className="col-span-2 sm:col-span-1">
+                    <p className="text-slate-400 font-semibold uppercase text-[10px] mb-1">Phone</p>
+                    <input
+                      type="text"
+                      value={phone}
+                      readOnly
+                      className="w-full border border-border-crm bg-bg-main dark:bg-slate-900 rounded-lg px-3 py-2 focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <p className="text-slate-400 font-semibold uppercase text-[10px] mb-1">Assigned Representative</p>
+                    <p className="font-bold text-txt-primary mt-0.5 text-xs">{assignedUser}</p>
+                  </div>
+                  <div>
+                    <p className="text-slate-400 font-semibold uppercase text-[10px] mb-1">Service Type</p>
+                    <p className="font-bold text-txt-primary mt-0.5 text-xs">{serviceType}</p>
+                  </div>
+                  <div>
+                    <p className="text-slate-400 font-semibold uppercase text-[10px] mb-1">Lead Sync Status</p>
+                    <p className="font-bold text-txt-primary mt-0.5 text-xs flex items-center gap-1">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-success shrink-0" />
+                      {status}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-slate-400 font-semibold uppercase text-[10px] mb-1">Created At</p>
+                    <p className="font-bold text-txt-primary mt-0.5 text-xs flex items-center gap-1">
+                      <Calendar className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                      {createdAt}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Modal Footer */}
+              <div className="border-t border-border-crm pt-4 mt-6 flex justify-end">
+                <button
+                  onClick={() => setSelectedOpp(null)}
+                  className="bg-primary hover:bg-primary-hover text-white text-xs font-semibold px-6 py-2.5 rounded-xl shadow transition cursor-pointer"
+                >
+                  Close Details
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
 
     </div>
   );

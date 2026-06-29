@@ -64,7 +64,7 @@ export default function QuotationsView({
                 <td className="px-6 py-4 font-semibold">{quote.clientName}</td>
                 <td className="px-6 py-4 font-medium text-txt-secondary">{quote.company}</td>
                 <td className="px-6 py-4 text-txt-secondary">{quote.date}</td>
-                <td className="px-6 py-4 text-right font-extrabold text-txt-primary">${quote.grandTotal.toLocaleString()}</td>
+                <td className="px-6 py-4 text-right font-extrabold text-txt-primary">₹{quote.grandTotal.toLocaleString()}</td>
                 <td className="px-6 py-4">
                   <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
                     quote.status === 'Approved' ? 'bg-emerald-50 border-emerald-200 text-success' :
@@ -163,8 +163,8 @@ export default function QuotationsView({
                     <tr key={idx} className="text-txt-primary">
                       <td className="px-4 py-3 font-semibold">{item.description}</td>
                       <td className="px-4 py-3 text-right">{item.qty}</td>
-                      <td className="px-4 py-3 text-right">${item.price.toLocaleString()}</td>
-                      <td className="px-4 py-3 text-right font-bold">${item.total.toLocaleString()}</td>
+                      <td className="px-4 py-3 text-right">₹{item.price.toLocaleString()}</td>
+                      <td className="px-4 py-3 text-right font-bold">₹{item.total.toLocaleString()}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -176,19 +176,19 @@ export default function QuotationsView({
               <div className="w-64 space-y-2 text-xs">
                 <div className="flex justify-between text-txt-secondary">
                   <span>Subtotal:</span>
-                  <span>${selectedQuote.subtotal.toLocaleString()}</span>
+                  <span>₹{selectedQuote.subtotal.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between text-txt-secondary">
                   <span>Tax Rate ({selectedQuote.taxRate}%):</span>
-                  <span>${selectedQuote.taxAmount.toLocaleString()}</span>
+                  <span>₹{selectedQuote.taxAmount.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between text-txt-secondary">
                   <span>Discount:</span>
-                  <span>-${Number(selectedQuote.discount || 0).toLocaleString()}</span>
+                  <span>-₹{Number(selectedQuote.discount || 0).toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between border-t border-border-crm pt-2 text-sm font-extrabold text-txt-primary">
                   <span>Grand Total:</span>
-                  <span className="text-primary">${selectedQuote.grandTotal.toLocaleString()}</span>
+                  <span className="text-primary">₹{selectedQuote.grandTotal.toLocaleString()}</span>
                 </div>
               </div>
             </div>
@@ -202,7 +202,7 @@ export default function QuotationsView({
                 Close Invoice
               </button>
               <button
-                onClick={() => { alert('Print layout trigger simulated. Grand Total: $' + selectedQuote.grandTotal.toLocaleString()); window.print(); }}
+                onClick={() => { alert('Print layout trigger simulated. Grand Total: ₹' + selectedQuote.grandTotal.toLocaleString()); window.print(); }}
                 className="flex-1 bg-primary hover:bg-primary-hover text-white rounded-xl py-2 font-semibold shadow cursor-pointer"
               >
                 Generate PDF / Print
@@ -251,7 +251,7 @@ export default function QuotationsView({
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-400 font-semibold mb-1">Discount ($)</label>
+                  <label className="block text-slate-400 font-semibold mb-1">Discount (₹)</label>
                   <input
                     type="number" required
                     className="w-full border border-border-crm bg-bg-main rounded-xl px-3 py-2 text-txt-primary focus:outline-none bg-white"

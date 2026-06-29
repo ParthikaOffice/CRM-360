@@ -8,6 +8,7 @@ export default function LeadsPage() {
   return (
     <LeadsView
       leads={crm.leads}
+      opportunities={crm.opportunities}
       categories={crm.categories}
       user={crm.user}
       searchQuery={crm.searchQuery}

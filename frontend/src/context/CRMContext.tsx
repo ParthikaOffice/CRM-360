@@ -74,7 +74,10 @@ export interface CRMContextType {
   handleCreateLeadFromView: (leadForm: any) => Promise<void>;
   handleUpdateLeadFromView: (leadId: string, leadData: any) => Promise<void>;
   handleDeleteLeadFromView: (leadId: string) => Promise<void>;
-  handleConvertLeadFromView: (leadId: string, dealValue: string, salesperson: string) => Promise<void>;
+  handleConvertLeadFromView: (
+  leadId: string,
+  dealValue: string
+) => Promise<void>;
   handleMoveOpportunity: (oppId: string, stageId: string) => Promise<void>;
   handleAddStage: (stageName: string) => Promise<void>;
   handleStageReorder: (stageId: string, direction: 'left' | 'right') => Promise<void>;
@@ -154,7 +157,7 @@ export const CRMProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [referrals, setReferrals] = useState<any[]>([]);
   const [referralForm, setReferralForm] = useState<any>({
     referrerName: '', referrerCompany: '', referredLeadName: '', referredCompany: '',
-    dealValue: '10000', rewardType: 'Credits', rewardValue: '$1,000 Credits'
+    dealValue: '10000', rewardType: 'Credits', rewardValue: '₹1,000 Credits'
   });
   const [categories, setCategories] = useState<string[]>([]);
   const [serviceTypes] = useState<string[]>(['Service Based', 'Product Based']);
@@ -163,7 +166,7 @@ export const CRMProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     name: 'Global CRM Cloud',
     primaryColor: '#2563EB',
     secondaryColor: '#0F172A',
-    logoText: 'Odoo CRM Pro'
+    logoText: 'CRM 360'
   });
 
   // UI Detail States (Modals, drawers, and creation forms)
@@ -271,7 +274,7 @@ export const CRMProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         { id: 'q_1', quoteNumber: 'QT-2026-001', clientName: 'Clark Kent', company: 'Daily Planet Publishing', opportunityId: 'o_3', date: '2026-04-25', status: 'Approved', taxRate: 8, discount: 2500, items: [{ description: 'Enterprise License', qty: 50, price: 800, total: 40000 }], subtotal: 40000, taxAmount: 3200, grandTotal: 40700 }
       ]);
       setReferrals([
-        { id: 'ref_1', referrerName: 'Clark Kent', referrerCompany: 'Daily Planet Publishing', referredLeadName: 'Lois Lane', referredCompany: 'Metropolis Gazette', dealValue: 75000, stage: 'rp_3', dateSubmitted: '2026-06-10', rewardType: 'Credits', rewardValue: '$1,500 CRM Credits', rewardApproved: false }
+        { id: 'ref_1', referrerName: 'Clark Kent', referrerCompany: 'Daily Planet Publishing', referredLeadName: 'Lois Lane', referredCompany: 'Metropolis Gazette', dealValue: 75000, stage: 'rp_3', dateSubmitted: '2026-06-10', rewardType: 'Credits', rewardValue: '₹1,500 CRM Credits', rewardApproved: false }
       ]);
       setAuditLogs([
         { id: 'log_offline_init', timestamp: new Date().toISOString(), user: 'System', role: 'System', action: 'INIT_OFFLINE', module: 'Database', details: 'Express offline. Seeded local mock state.' }
@@ -279,12 +282,21 @@ export const CRMProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
-  // Auth check
+  // Auth check and Theme initialization
   useEffect(() => {
     setMounted(true);
     const savedUser = localStorage.getItem('crm_user');
     if (savedUser) {
       setUser(JSON.parse(savedUser));
+    }
+    const savedTheme = localStorage.getItem('crm_theme') || 'light';
+    setTheme(savedTheme);
+    if (savedTheme === 'dark') {
+      document.body.classList.add('dark-theme');
+      document.documentElement.classList.add('dark');
+    } else {
+      document.body.classList.remove('dark-theme');
+      document.documentElement.classList.remove('dark');
     }
     loadCRMData();
   }, []);
@@ -383,28 +395,44 @@ export const CRMProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
-  const handleConvertLeadFromView = async (leadId: string, dealValue: string, salesperson: string) => {
-    const res = await apiCall(`/leads/${leadId}/convert`, 'POST', { dealValue, salesperson });
+  const handleConvertLeadFromView = async (leadId: string, dealValue: string) => {
+    const leadObj = leads.find(l => l.id === leadId);
+
+const salesperson = leadObj?.assignedUser || user?.name || 'Unassigned';
+
+const res = await apiCall(
+  `/leads/${leadId}/convert`,
+  'POST',
+  {
+    dealValue,
+    salesperson
+  }
+);
     if (res) {
       addToast('success', 'Converted lead to Opportunity!');
       loadCRMData();
     } else {
       const leadObj = leads.find(l => l.id === leadId);
       if (leadObj) {
+        const sortedPipes = [...pipelines].sort((a, b) => a.order - b.order);
+        const newStage = pipelines.find(p => p.name.toLowerCase() === 'new') || sortedPipes[0];
+        const stageId = newStage ? newStage.id : 'p_1';
+
         const mockOpp = {
           id: 'o_' + Date.now(),
-          customerName: leadObj.name,
+          leadId: leadId,
+          customerName: leadObj.contactName || leadObj.name || 'Unknown',
           company: leadObj.company,
           dealValue: Number(dealValue) || 10000,
           expectedClosing: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-          assignedSalesperson: salesperson || user?.name || 'Unassigned',
+          assignedSalesperson: salesperson,
           priority: 'Medium',
           tags: [leadObj.source, leadObj.category],
-          stageId: 'p_1',
+          stageId: stageId,
           createdDate: new Date().toISOString().split('T')[0]
         };
         setOpportunities(prev => [...prev, mockOpp]);
-        setLeads(prev => prev.filter(l => l.id !== leadId));
+        setLeads(prev => prev.map(l => l.id === leadId ? { ...l, status: newStage ? newStage.name : 'New' } : l));
         addToast('success', 'Converted lead to Opportunity (Offline Mode)');
       }
     }
@@ -476,6 +504,19 @@ export const CRMProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       addToast('success', `Opportunity moved to stage`);
       loadCRMData();
     } else {
+      // Find pipeline stage name and sync lead status offline
+      const stage = pipelines.find(p => p.id === stageId);
+      if (stage) {
+        const stageName = stage.name;
+        setLeads(prev => prev.map(l => {
+          const isMatch = opp.leadId ? (l.id === opp.leadId) : ((l.name === opp.customerName || l.contactName === opp.customerName) && l.company === opp.company);
+          if (isMatch) {
+            return { ...l, status: stageName };
+          }
+          return l;
+        }));
+      }
+
       if (stageId === 'p_6') {
         const already = referrals.some(r => r.referrerName === opp.customerName);
         if (!already) {
@@ -483,7 +524,7 @@ export const CRMProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             id: 'ref_' + Date.now(), referrerName: opp.customerName, referrerCompany: opp.company,
             referredLeadName: 'Pending referral', referredCompany: 'Pending Company Corp', dealValue: 0,
             stage: 'rp_1', dateSubmitted: new Date().toISOString().split('T')[0], rewardType: 'Credits',
-            rewardValue: '$1,000 Credits', rewardApproved: false
+            rewardValue: '₹1,000 Credits', rewardApproved: false
           };
           setReferrals(prev => [...prev, newRef]);
           addToast('success', `${opp.customerName} enrolled in Referral Program!`);
@@ -672,7 +713,7 @@ export const CRMProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       const q = searchQuery.toLowerCase();
       filtered = filtered.filter(item => {
         if (type === 'leads') {
-          return item.name.toLowerCase().includes(q) || item.company.toLowerCase().includes(q) || item.email.toLowerCase().includes(q);
+          return item.contactName.toLowerCase().includes(q) || item.company.toLowerCase().includes(q) || item.email.toLowerCase().includes(q);
         } else if (type === 'opportunities') {
           return item.customerName.toLowerCase().includes(q) || item.company.toLowerCase().includes(q) || item.priority.toLowerCase().includes(q);
         } else if (type === 'emails') {
@@ -824,10 +865,13 @@ export const CRMProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const toggleTheme = () => {
     const nextTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(nextTheme);
+    localStorage.setItem('crm_theme', nextTheme);
     if (nextTheme === 'dark') {
       document.body.classList.add('dark-theme');
+      document.documentElement.classList.add('dark');
     } else {
       document.body.classList.remove('dark-theme');
+      document.documentElement.classList.remove('dark');
     }
     addToast('info', `Switched to ${nextTheme} mode`);
   };
