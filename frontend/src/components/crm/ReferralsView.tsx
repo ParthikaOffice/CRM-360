@@ -34,7 +34,7 @@ export default function ReferralsView({
   return (
     <div className="space-y-6 text-xs text-slate-800 dark:text-slate-200">
       
-      {/* KPI Referral Dashboard */}
+    
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 shrink-0">
         
         <div className="bg-card rounded-2xl p-5 border border-border-crm shadow-xs">
@@ -67,7 +67,7 @@ export default function ReferralsView({
 
       </div>
 
-      {/* Workflow Diagram */}
+  
       <div className="bg-card border border-border-crm rounded-2xl p-5 flex flex-col md:flex-row items-center justify-around gap-4 text-center">
         <div className="p-3 bg-blue-50 dark:bg-slate-800 border border-blue-100 dark:border-slate-700 rounded-xl w-44">
           <span className="font-extrabold text-primary dark:text-blue-400">Won Client</span>

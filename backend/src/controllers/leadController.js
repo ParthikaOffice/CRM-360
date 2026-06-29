@@ -10,7 +10,6 @@ const createLead = async (req, res) => {
       data: {
         contactName: req.body.contactName,
         company: req.body.company,
-        source: req.body.source,
         email: req.body.email,
         phone: req.body.phone,
         category: req.body.category,
