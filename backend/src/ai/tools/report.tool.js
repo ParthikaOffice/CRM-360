@@ -1,16 +1,16 @@
-const DashboardActions = require("../actions/dashboard.actions");
+const ReportActions = require("../actions/report.actions");
 
 module.exports = {
 
-    name: "dashboard",
+    name: "report",
 
     async execute(step, req) {
 
         switch (step.action) {
 
-            case "summary":
+            case "generate":
 
-                return await DashboardActions.summary(
+                return await ReportActions.generate(
 
                     step.parameters,
 
@@ -24,7 +24,7 @@ module.exports = {
 
                     success: false,
 
-                    message: `Unknown dashboard action '${step.action}'.`
+                    message: `Unknown report action '${step.action}'.`
 
                 };
 
